@@ -12,11 +12,11 @@ class CartService
     {
         return session()->get(self::SESSION_KEY, []);
     }
-
-    public function add(Product $product, string $size, int $quantity): void
+    public function add(Product $product, string $size, int $quantity, string $note = ''): void
     {
         $cart = $this->all();
-        $key  = $this->makeKey($product->id, $size);
+        $note = trim($note);
+        $key  = $this->makeKey($product->id, $size, $note);
 
         $unitPrice = $product->priceBySize($size);
 
@@ -29,6 +29,7 @@ class CartService
                 'slug'       => $product->slug,
                 'image'      => $product->image,
                 'size'       => $size,
+                'note'       => $note,
                 'unit_price' => $unitPrice,
                 'quantity'   => $quantity,
             ];
@@ -38,7 +39,6 @@ class CartService
 
         session()->put(self::SESSION_KEY, $cart);
     }
-
     public function update(string $key, int $quantity): void
     {
         $cart = $this->all();
@@ -81,9 +81,9 @@ class CartService
         return empty($this->all());
     }
 
-    // Cùng sản phẩm khác size = 2 dòng riêng biệt
-    private function makeKey(int $productId, string $size): string
+    // Cùng món khác size hoặc khác ghi chú = dòng riêng
+    private function makeKey(int $productId, string $size, string $note = ''): string
     {
-        return $productId . '-' . $size;
+        return $productId . '-' . $size . '-' . substr(md5($note), 0, 8);
     }
 }

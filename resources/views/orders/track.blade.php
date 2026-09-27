@@ -57,7 +57,57 @@
                     </div>
                 </div>
             @endisset
-        </div>
+                    @auth
+                <h5 class="fw-bold text-coffee mt-4 mb-3">Đơn hàng của bạn</h5>
+                       @forelse($myOrders as $o)
+                    <div class="card mb-2">
+                        <div class="card-body d-flex justify-content-between align-items-center"
+                             data-bs-toggle="collapse" data-bs-target="#order-{{ $o->id }}"
+                             style="cursor:pointer">
+                            <span>
+                                <strong>{{ $o->order_code }}</strong>
+                                <span class="small text-muted ms-2">{{ $o->created_at->format('H:i d/m/Y') }}</span>
+                            </span>
+                            <span>
+                                <span class="badge bg-primary">{{ $o->status_label }}</span>
+                                <span class="fw-bold text-coffee ms-2">{{ number_format($o->total_amount, 0, ',', '.') }}đ</span>
+                                <i class="bi bi-chevron-down ms-2"></i>
+                            </span>
+                        </div>
+                        <div class="collapse" id="order-{{ $o->id }}">
+                            <div class="px-3 pb-3">
+                                <table class="table table-sm mb-0">
+                                    @foreach($o->items as $item)
+                                        <tr>
+                                            <td>{{ $item->product_name }}
+                                                @if($item->note)
+                                                    <div class="small text-muted">{{ $item->note }}</div>
+                                                @endif
+                                                <span class="badge bg-secondary">{{ $item->size }}</span>
+                                                × {{ $item->quantity }}</td>
+                                            <td class="text-end">{{ number_format($item->subtotal, 0, ',', '.') }}đ</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                                     <div class="small text-muted mt-2">
+                                    <div><strong>Người nhận:</strong> {{ $o->customer_name }} — {{ $o->customer_phone }}</div>
+                                    @if($o->address)
+                                        <div><strong>Địa chỉ:</strong> {{ $o->address }}</div>
+                                    @else
+                                        <div><strong>Hình thức:</strong> Lấy tại quầy</div>
+                                    @endif
+                                    @if($o->note)
+                                        <div><strong>Ghi chú:</strong> {{ $o->note }}</div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-muted">Bạn chưa có đơn hàng nào.</p>
+                @endforelse
+            @endauth
+         </div>
     </div>
 </div>
 @endsection

@@ -61,6 +61,7 @@
                     </li>
                 @else
                     <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Đăng nhập</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Đăng ký</a></li>
                 @endauth
             </ul>
         </div>

@@ -24,6 +24,7 @@ class CartController extends Controller
             'product_id' => 'required|exists:products,id',
             'size'       => 'required|in:S,M,L',
             'quantity'   => 'required|integer|min:1|max:20',
+            'note'       => 'nullable|string|max:255',
         ]);
 
         $product = Product::findOrFail($data['product_id']);
@@ -32,7 +33,7 @@ class CartController extends Controller
             return back()->with('error', 'Món này hiện đã hết.');
         }
 
-        $this->cart->add($product, $data['size'], $data['quantity']);
+        $this->cart->add($product, $data['size'], $data['quantity'], $data['note'] ?? '');
 
         return redirect()->route('cart.index')
             ->with('success', 'Đã thêm ' . $product->name . ' vào giỏ hàng.');

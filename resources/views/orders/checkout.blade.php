@@ -67,7 +67,12 @@
                         <h6 class="fw-bold mb-3">Đơn hàng của bạn</h6>
                         @foreach($items as $item)
                             <div class="d-flex justify-content-between small mb-2">
-                                <span>{{ $item['name'] }} ({{ $item['size'] }}) × {{ $item['quantity'] }}</span>
+                               <span>
+                            {{ $item['name'] }} ({{ $item['size'] }}) × {{ $item['quantity'] }}
+                            @if(!empty($item['note']))
+                                <div class="small text-muted">{{ $item['note'] }}</div>
+                            @endif
+                        </span>
                                 <span>{{ number_format($item['subtotal'], 0, ',', '.') }}đ</span>
                             </div>
                         @endforeach

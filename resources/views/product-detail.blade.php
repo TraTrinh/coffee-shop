@@ -45,7 +45,11 @@
         <label class="form-label fw-bold">Số lượng</label>
         <input type="number" name="quantity" class="form-control" value="1" min="1" max="20">
     </div>
-
+        <div class="mb-4">
+        <label class="form-label fw-bold">Ghi chú cho món</label>
+        <input type="text" name="note" class="form-control" maxlength="255"
+               placeholder="VD: ít đường, nhiều đá...">
+    </div>
     <button type="submit" class="btn btn-coffee btn-lg">
         <i class="bi bi-cart-plus"></i> Thêm vào giỏ
     </button>

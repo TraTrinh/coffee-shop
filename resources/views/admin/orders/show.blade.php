@@ -18,7 +18,11 @@
                     <tbody>
                     @foreach($order->items as $item)
                         <tr>
-                            <td>{{ $item->product_name }}</td>
+                            <td>{{ $item->product_name }}
+                            @if($item->note)
+                            <div class="small text-muted">{{ $item->note }}</div>
+                        @endif
+                            </td>
                             <td><span class="badge bg-secondary">{{ $item->size }}</span></td>
                             <td>{{ number_format($item->unit_price,0,',','.') }}đ</td>
                             <td>{{ $item->quantity }}</td>

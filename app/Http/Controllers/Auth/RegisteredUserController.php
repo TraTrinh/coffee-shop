@@ -46,8 +46,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        Route::get('/dashboard', function () {
-        return view('dashboard');
-        })->middleware(['auth', 'verified'])->name('dashboard');
-        }
+        return redirect()->route('home');
+    }
 }

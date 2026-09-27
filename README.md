@@ -1,59 +1,90 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ☕ Coffee Shop — Website đặt cà phê trực tuyến
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Đồ án môn học: website đặt đồ uống cho quán cà phê, xây dựng bằng **Laravel 12**. Có giao diện cho khách hàng và trang quản trị cho quản lý quán.
 
-## About Laravel
+## Tính năng
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Khách hàng**
+- Xem thực đơn, lọc theo danh mục, xem chi tiết món với giá theo size
+- Giỏ hàng: thêm, sửa số lượng, xóa món
+- Đặt hàng không cần tài khoản: giao tận nơi hoặc nhận tại quán
+- Tra cứu đơn hàng bằng mã đơn + số điện thoại
+- Đăng ký / đăng nhập: khách đã đăng nhập xem được lịch sử đơn của mình ở trang tra cứu
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Quản trị**
+- Dashboard thống kê doanh thu (Chart.js)
+- Quản lý danh mục và sản phẩm (thêm, sửa, xóa, upload ảnh)
+- Quản lý đơn hàng, cập nhật trạng thái đơn
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Công nghệ
 
-## Learning Laravel
+- Backend: Laravel 12, PHP 8.2, Eloquent ORM, Laravel Breeze
+- Frontend: Blade, Bootstrap 5, Chart.js, Vite
+- Database: MySQL / MariaDB
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Yêu cầu môi trường
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP >= 8.2
+- Composer 2.x
+- Node.js >= 20 và npm
+- MySQL hoặc MariaDB (có thể dùng XAMPP)
 
-## Laravel Sponsors
+## Cài đặt
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/TraTrinh/coffee-shop.git
+cd coffee-shop
 
-### Premium Partners
+composer install
+npm install && npm run build
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+cp .env.example .env        # Windows CMD: copy .env.example .env
+php artisan key:generate
+```
 
-## Contributing
+Tạo database trống tên `coffee_shop`, rồi sửa file `.env`:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=coffee_shop
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Code of Conduct
+Tạo bảng và dữ liệu mẫu:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan migrate --seed
+php artisan storage:link
+```
 
-## Security Vulnerabilities
+## Chạy project
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan serve
+```
 
-## License
+Mở trình duyệt tại http://127.0.0.1:8000
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Tài khoản mặc định
+
+| Vai trò | Email | Mật khẩu |
+|---|---|---|
+| Admin | admin@coffee.test | admin123 |
+
+Khách hàng có thể tự đăng ký tài khoản tại `/register`.
+
+## Cấu trúc thư mục chính
+
+```
+app/Http/Controllers   # Controller cho khách hàng và admin
+app/Http/Middleware    # IsAdmin: chặn người không phải admin
+app/Models             # Category, Product, Order, OrderItem, User
+app/Services           # CartService: giỏ hàng lưu trong session
+resources/views        # Giao diện Blade (menu, cart, checkout, track, admin...)
+routes/web.php         # Định tuyến
+database/migrations    # Cấu trúc bảng
+database/seeders       # Dữ liệu mẫu
+```

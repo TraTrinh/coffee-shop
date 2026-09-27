@@ -23,6 +23,9 @@
                             <tr>
                                 <td class="text-start">
                                     {{ $item->product_name }}
+                                    @if($item->note)
+                                    <div class="small text-muted">{{ $item->note }}</div>
+                                @endif
                                     <span class="badge bg-secondary">{{ $item->size }}</span>
                                     × {{ $item->quantity }}
                                 </td>

@@ -30,7 +30,12 @@
                             <tbody>
                             @foreach($items as $key => $item)
                                 <tr>
-                                    <td class="fw-bold">{{ $item['name'] }}</td>
+                                  <td class="fw-bold">
+                                        {{ $item['name'] }}
+                                        @if(!empty($item['note']))
+                                            <div class="small text-muted fw-normal">{{ $item['note'] }}</div>
+                                        @endif
+                                    </td>
                                     <td><span class="badge bg-secondary">{{ $item['size'] }}</span></td>
                                     <td>{{ number_format($item['unit_price'], 0, ',', '.') }}đ</td>
                                     <td>

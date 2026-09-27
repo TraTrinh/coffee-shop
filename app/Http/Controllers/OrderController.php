@@ -54,6 +54,7 @@ class OrderController extends Controller
                     'product_id'   => $item['product_id'],
                     'product_name' => $item['name'],
                     'size'         => $item['size'],
+                    'note'         => $item['note'] ?? null,
                     'unit_price'   => $item['unit_price'],
                     'quantity'     => $item['quantity'],
                     'subtotal'     => $item['subtotal'],
@@ -76,11 +77,13 @@ class OrderController extends Controller
 
     public function trackForm()
     {
-        return view('orders.track');
+        return view('orders.track', [
+            'myOrders' => $this->myOrders(),
+        ]);
     }
 
     public function track(Request $request)
-    {
+      {
         $request->validate([
             'order_code' => 'required|string',
             'phone'      => 'required|string',
@@ -95,6 +98,21 @@ class OrderController extends Controller
             return back()->with('error', 'Không tìm thấy đơn hàng. Kiểm tra lại mã đơn và số điện thoại.');
         }
 
-        return view('orders.track', compact('order'));
+        return view('orders.track', [
+            'order'    => $order,
+            'myOrders' => $this->myOrders(),
+        ]);
+    }
+        // Đơn của tài khoản đang đăng nhập (khách chưa đăng nhập thì trả về rỗng)
+    private function myOrders()
+    {
+        if (!auth()->check()) {
+            return collect();
+        }
+
+        return Order::with('items')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
     }
 }
